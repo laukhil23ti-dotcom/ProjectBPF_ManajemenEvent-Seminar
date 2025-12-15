@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/pcr', function () {
-    return 'welcome guysss micuuu';
+Route::get('/pcr2', function () {
+    return 'welcome guysss';
 });
