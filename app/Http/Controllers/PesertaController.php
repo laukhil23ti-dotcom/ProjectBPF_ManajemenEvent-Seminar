@@ -7,83 +7,72 @@ use Illuminate\Http\Request;
 
 class PesertaController extends Controller
 {
-    /**
-     * Menampilkan data peserta (Admin & Staff)
-     */
-    public function index()
+    // READ
+    public function index(Request $request)
     {
-        $peserta = Peserta::paginate(10);
+        $query = Peserta::query();
+
+        if ($request->search) {
+            $query->where('nama', 'like', '%'.$request->search.'%')
+                  ->orWhere('email', 'like', '%'.$request->search.'%');
+        }
+
+        $peserta = $query->paginate(10);
+
         return view('admin.peserta.index', compact('peserta'));
     }
 
-    /**
-     * Form pendaftaran peserta (Guest)
-     */
+    // CREATE FORM
     public function create()
     {
-        return view('guest.peserta.create');
+        return view('admin.peserta.create');
     }
 
-    /**
-     * Simpan data peserta (Guest)
-     */
+    // STORE
     public function store(Request $request)
     {
         $request->validate([
-            'nama'   => 'required',
-            'email'  => 'required|email',
-            'no_hp'  => 'required',
-            'event'  => 'required',
+            'nama'     => 'required',
+            'email'    => 'required|email',
+            'no_hp'    => 'required',
+            'event_id' => 'required',
         ]);
 
         Peserta::create($request->all());
 
-        return redirect()->back()->with('success', 'Pendaftaran berhasil');
+        return redirect()->route('peserta.index')
+            ->with('success', 'Peserta berhasil ditambahkan');
     }
 
-    /**
-     * Detail peserta (opsional)
-     */
-    public function show($id)
-    {
-        $peserta = Peserta::findOrFail($id);
-        return view('admin.peserta.show', compact('peserta'));
-    }
-
-    /**
-     * Form edit peserta (Admin & Staff)
-     */
+    // EDIT FORM
     public function edit($id)
     {
         $peserta = Peserta::findOrFail($id);
         return view('admin.peserta.edit', compact('peserta'));
     }
 
-    /**
-     * Update data peserta (Admin & Staff)
-     */
+    // UPDATE
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama'  => 'required',
-            'email' => 'required|email',
-            'no_hp' => 'required',
-            'event' => 'required',
+            'nama'     => 'required',
+            'email'    => 'required|email',
+            'no_hp'    => 'required',
+            'event_id' => 'required',
         ]);
 
         Peserta::findOrFail($id)->update($request->all());
 
         return redirect()->route('peserta.index')
-                         ->with('success', 'Data peserta berhasil diperbarui');
+            ->with('success', 'Data peserta berhasil diperbarui');
     }
 
-    /**
-     * Hapus data peserta (Admin only)
-     */
+    // DELETE
     public function destroy($id)
     {
         Peserta::destroy($id);
+
         return redirect()->route('peserta.index')
-                         ->with('success', 'Data peserta berhasil dihapus');
+            ->with('success', 'Data peserta berhasil dihapus');
     }
 }

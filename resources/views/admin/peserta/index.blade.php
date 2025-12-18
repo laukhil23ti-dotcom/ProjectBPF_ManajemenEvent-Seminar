@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PolluxUI Admin</title>
+    <title>Data Peserta</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
@@ -35,9 +35,16 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link">
+                    <a href="{{ route('dashboard') }}" class="nav-link">
                         <i class="typcn typcn-device-desktop menu-icon"></i>
                         <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="{{ route('peserta.index') }}" class="nav-link">
+                        <i class="typcn typcn-group-outline menu-icon"></i>
+                        <span class="menu-title">Peserta</span>
                     </a>
                 </li>
             </ul>
@@ -51,7 +58,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h4 class="mb-1">Data Peserta</h4>
-                        <small class="text-muted">List seluruh data peserta</small>
+                        <small class="text-muted">Daftar seluruh peserta seminar</small>
                     </div>
                     <a href="{{ route('peserta.create') }}" class="btn btn-success">
                         + Tambah Peserta
@@ -66,25 +73,22 @@
                     </div>
                 @endif
 
-                <!-- CARD TABLE -->
+                <!-- CARD -->
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
 
-                        <!-- FILTER -->
-                        <form method="GET" action="{{ route('peserta.index') }}" class="row g-2 mb-3">
-                            <div class="col-md-2">
-                                <select name="gender" class="form-control" onchange="this.form.submit()">
-                                    <option value="">All Gender</option>
-                                    <option value="Male" {{ request('gender')=='Male'?'selected':'' }}>Male</option>
-                                    <option value="Female" {{ request('gender')=='Female'?'selected':'' }}>Female</option>
-                                </select>
-                            </div>
-
+                        <!-- SEARCH -->
+                        <form method="GET" action="{{ route('peserta.index') }}" class="row mb-3">
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="text" name="search" class="form-control"
-                                           value="{{ request('search') }}" placeholder="Cari peserta...">
-                                    <button class="btn btn-primary">Cari</button>
+                                    <input type="text"
+                                           name="search"
+                                           class="form-control"
+                                           placeholder="Cari nama atau email..."
+                                           value="{{ request('search') }}">
+                                    <button class="btn btn-primary">
+                                        Cari
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -95,42 +99,47 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>First</th>
-                                        <th>Last</th>
-                                        <th>Birthday</th>
-                                        <th>Gender</th>
+                                        <th>Nama</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>No HP</th>
+                                        <th>Alamat</th>
+                                        <th>Event</th>
                                         <th width="150">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($peserta as $i => $item)
-                                        <tr>
-                                            <td>{{ $peserta->firstItem() + $i }}</td>
-                                            <td>{{ $item->first_name }}</td>
-                                            <td>{{ $item->last_name }}</td>
-                                            <td>{{ $item->birthday }}</td>
-                                            <td>{{ $item->gender }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->phone }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('peserta.edit', $item->peserta_id) }}"
-                                                   class="btn btn-info btn-sm mb-1">
-                                                    Edit
-                                                </a>
-                                                <form action="{{ route('peserta.destroy', $item->peserta_id) }}"
-                                                      method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Hapus data peserta ini?')">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    @forelse ($peserta as $i => $item)
+                                    <tr>
+                                        <td>{{ $peserta->firstItem() + $i }}</td>
+                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->no_hp }}</td>
+                                        <td>{{ $item->alamat ?? '-' }}</td>
+                                        <td>{{ $item->event_id }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('peserta.edit', $item->id) }}"
+                                               class="btn btn-info btn-sm mb-1">
+                                                Edit
+                                            </a>
+
+                                            <form action="{{ route('peserta.destroy', $item->id) }}"
+                                                  method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Yakin hapus data ini?')">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">
+                                            Data peserta belum ada
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -149,7 +158,7 @@
             <footer class="footer mt-auto">
                 <div class="card mb-0">
                     <div class="card-body text-center">
-                        PolluxUI + Laravel
+                        © {{ date('Y') }} PolluxUI + Laravel
                     </div>
                 </div>
             </footer>
@@ -159,7 +168,7 @@
 </div>
 
 <!-- JS -->
-<script src="{{ asset('assets-admin/vendors/js/vendor.bundle.base.js') }}"></script>
+<script src="{{ asset('assets-admin/vendors/js/vendor.bundle.base.js') }}"></cript>
 <script src="{{ asset('assets-admin/js/off-canvas.js') }}"></script>
 <script src="{{ asset('assets-admin/js/template.js') }}"></script>
 
