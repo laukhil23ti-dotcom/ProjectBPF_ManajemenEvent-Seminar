@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Peserta;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        // Ambil peserta terbaru 5 data
+        $peserta = Peserta::latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('peserta'));
     }
 }
