@@ -98,7 +98,7 @@
                             <table class="table table-hover table-bordered align-middle">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>#</th>
+                                        <th>No</th>
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>No HP</th>
