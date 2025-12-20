@@ -39,18 +39,3 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/staff/dashboard', function () {return view('staff.dashboard');})->name('staff.dashboard');
 Route::get('/staff/peserta', [PesertaController::class, 'index'])->name('staff.peserta.index');
 });
-
-
-
-
-/* ===== PREVIEW TANPA LOGIN (SEMENTARA) ===== */
-
-Route::get('/test-admin', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('/test-staff', function () {
-    return view('staff.dashboard', [
-        'totalPeserta' => 123
-    ]);
-});
