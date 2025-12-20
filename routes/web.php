@@ -9,6 +9,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 /* ADMIN & STAFF */
 Route::middleware(['auth'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -17,8 +18,6 @@ Route::resource('peserta', PesertaController::class);
 
 /* PESERTA / PUBLIC */
 Route::get('/', function () {return view('peserta.home');
-});
-
 Route::get('/daftar', function () {return view('peserta.daftar');
 });
 
