@@ -13,7 +13,6 @@ class Peserta extends Model
         'email',
         'no_hp',
         'alamat',
-        'event'
+        'event_id'
     ];
 }
-
