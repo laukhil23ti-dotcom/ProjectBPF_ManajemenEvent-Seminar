@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PesertaPublicController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/staff/peserta', [PesertaController::class, 'index'])
         ->name('staff.peserta.index');
 
+});
+
+//UNTUK PROFILE
+Route::middleware('auth')->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
