@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 
 @section('title','Dashboard Staff')
 
@@ -7,13 +7,15 @@
 <p class="text-muted">Login sebagai <b>STAFF</b></p>
 
 <div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h4>{{ $totalPeserta ?? 0 }}</h4>
-                <p>Total Peserta</p>
+    @foreach ($events as $event)
+        <div class="col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h4>{{ $event->peserta_count }}</h4>
+                    <p>{{ $event->judul_event }}</p>
+                </div>
             </div>
         </div>
-    </div>
+    @endforeach
 </div>
 @endsection

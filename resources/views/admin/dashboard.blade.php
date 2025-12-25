@@ -33,23 +33,33 @@
   <div class="container-fluid page-body-wrapper">
 
     <!-- SIDEBAR -->
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="typcn typcn-device-desktop menu-icon"></i>
-            <span class="menu-title">Dashboard</span>
-          </a>
-        </li>
+   <nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
 
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('peserta.index') }}">
-            <i class="typcn typcn-group-outline menu-icon"></i>
-            <span class="menu-title">Peserta</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('dashboard') }}">
+        <i class="typcn typcn-device-desktop menu-icon"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('event.index') }}">
+        <i class="typcn typcn-calendar-outline menu-icon"></i>
+        <span class="menu-title">Event</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('peserta.index') }}">
+        <i class="typcn typcn-group-outline menu-icon"></i>
+        <span class="menu-title">Peserta</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
 
     <!-- MAIN PANEL -->
     <div class="main-panel">
@@ -83,7 +93,7 @@
                     <td>{{ $p->nama }}</td>
                     <td>{{ $p->email }}</td>
                     <td>{{ $p->no_hp }}</td>
-                    <td>{{ $p->event_id }}</td>
+                    <td>{{ $p->event->judul_event ?? '-' }}</td>
                   </tr>
                   @empty
                   <tr>

@@ -2,107 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Peserta</title>
+    <title>Daftar Peserta Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSS -->
+    <!-- CSS ADMIN TEMPLATE -->
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/css/vertical-layout-light/style.css') }}">
 </head>
 <body>
 
-<div class="container-scroller">
-<div class="container-fluid page-body-wrapper">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
 
-    <div class="main-panel w-100">
-    <div class="content-wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Form Pendaftaran Event</h4>
+                </div>
 
-        <!-- HEADER -->
-        <div class="mb-4">
-            <h4 class="mb-1">Tambah Peserta Seminar</h4>
-            <small class="text-muted">Isi data peserta dengan lengkap</small>
-        </div>
+                <div class="card-body">
 
-        <!-- CARD FORM -->
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
+                    {{-- ALERT SUCCESS --}}
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-                <form action="{{ route('peserta.store') }}" method="POST">
-                    @csrf
+                    {{-- FORM --}}
+                    <form action="{{ route('peserta.public.store') }}" method="POST">
+                        @csrf
 
-                    <div class="row">
+                        <div class="row">
 
-                        <!-- NAMA -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Lengkap</label>
-                            <input type="text" name="nama"
-                                   class="form-control"
-                                   placeholder="Masukkan nama peserta"
-                                   required>
+                            <!-- NAMA -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text"
+                                       name="nama"
+                                       class="form-control"
+                                       placeholder="Masukkan nama lengkap"
+                                       required>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email"
+                                       name="email"
+                                       class="form-control"
+                                       placeholder="Masukkan email aktif"
+                                       required>
+                            </div>
+
+                            <!-- NO HP -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">No Handphone</label>
+                                <input type="text"
+                                       name="no_hp"
+                                       class="form-control"
+                                       placeholder="08xxxxxxxxxx"
+                                       required>
+                            </div>
+
+                            <!-- EVENT -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Pilih Event</label>
+                                <select name="event_id" class="form-control" required>
+                                    <option value="">-- Pilih Event --</option>
+                                    @foreach($events as $event)
+                                        <option value="{{ $event->id }}">
+                                            {{ $event->judul ?? $event->judul_event ?? 'Event #' . $event->id }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- ALAMAT -->
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Alamat</label>
+                                <textarea name="alamat"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Masukkan alamat lengkap"></textarea>
+                            </div>
+
                         </div>
 
-                        <!-- EMAIL -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email"
-                                   class="form-control"
-                                   placeholder="Masukkan email"
-                                   required>
+                        <!-- BUTTON -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{{ route('peserta.home') }}" class="btn btn-light me-2">
+                                Kembali
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Daftar Event
+                            </button>
                         </div>
 
-                        <!-- NO HP -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">No Handphone</label>
-                            <input type="text" name="no_hp"
-                                   class="form-control"
-                                   placeholder="08xxxxxxxxxx"
-                                   required>
-                        </div>
+                    </form>
+                    {{-- END FORM --}}
 
-                        <!-- EVENT -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Event ID</label>
-                            <input type="text" name="event_id"
-                                   class="form-control"
-                                   placeholder="Contoh: 1"
-                                   required>
-                        </div>
-
-                        <!-- ALAMAT -->
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label">Alamat</label>
-                            <textarea name="alamat"
-                                      class="form-control"
-                                      rows="3"
-                                      placeholder="Masukkan alamat lengkap"></textarea>
-                        </div>
-
-                    </div>
-
-                    <!-- BUTTON -->
-                    <div class="d-flex justify-content-end mt-4">
-                        <a href="{{ route('peserta.index') }}"
-                           class="btn btn-light me-2">
-                            Kembali
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            Simpan Peserta
-                        </button>
-                    </div>
-
-                </form>
-
+                </div>
             </div>
+
         </div>
-
     </div>
-    </div>
-
-</div>
 </div>
 
-<!-- JS -->
+<!-- JS ADMIN TEMPLATE -->
 <script src="{{ asset('assets-admin/vendors/js/vendor.bundle.base.js') }}"></script>
+<script src="{{ asset('assets-admin/js/off-canvas.js') }}"></script>
+<script src="{{ asset('assets-admin/js/hoverable-collapse.js') }}"></script>
 <script src="{{ asset('assets-admin/js/template.js') }}"></script>
 
 </body>

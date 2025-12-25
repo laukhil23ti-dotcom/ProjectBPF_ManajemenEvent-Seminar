@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peserta;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class PesertaController extends Controller
 {
-    // READ
+    /**
+     * Tampilkan data peserta (ADMIN)
+     */
     public function index(Request $request)
     {
-        $query = Peserta::query();
+        $query = Peserta::with('event');
 
         if ($request->search) {
-            $query->where('nama', 'like', '%'.$request->search.'%')
-                  ->orWhere('email', 'like', '%'.$request->search.'%');
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
         }
 
         $peserta = $query->paginate(10);
@@ -22,57 +25,51 @@ class PesertaController extends Controller
         return view('admin.peserta.index', compact('peserta'));
     }
 
-    // CREATE FORM
+    /**
+     * Form tambah peserta (ADMIN)
+     */
     public function create()
     {
-        return view('admin.peserta.create');
+        $events = Event::all();
+        return view('peserta.daftar', compact('events'));
     }
 
-    // STORE
+    /**
+     * Simpan peserta baru
+     */
     public function store(Request $request)
     {
         $request->validate([
             'nama'     => 'required',
             'email'    => 'required|email',
             'no_hp'    => 'required',
-            'event_id' => 'required',
+            'alamat'   => 'nullable',
+            'event_id' => 'required|exists:events,id',
         ]);
 
-        Peserta::create($request->all());
+        Peserta::create([
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'no_hp'    => $request->no_hp,
+            'alamat'   => $request->alamat,
+            'event_id' => $request->event_id,
+        ]);
 
-        return redirect()->route('peserta.index')
+        return redirect()
+            ->route('peserta.index')
             ->with('success', 'Peserta berhasil ditambahkan');
     }
 
-    // EDIT FORM
-    public function edit($id)
-    {
-        $peserta = Peserta::findOrFail($id);
-        return view('admin.peserta.edit', compact('peserta'));
-    }
-
-    // UPDATE
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama'     => 'required',
-            'email'    => 'required|email',
-            'no_hp'    => 'required',
-            'event_id' => 'required',
-        ]);
-
-        Peserta::findOrFail($id)->update($request->all());
-
-        return redirect()->route('peserta.index')
-            ->with('success', 'Data peserta berhasil diperbarui');
-    }
-
-    // DELETE
+    /**
+     * Hapus peserta
+     */
     public function destroy($id)
     {
-        Peserta::destroy($id);
+        $peserta = Peserta::findOrFail($id);
+        $peserta->delete();
 
-        return redirect()->route('peserta.index')
-            ->with('success', 'Data peserta berhasil dihapus');
+        return redirect()
+            ->route('peserta.index')
+            ->with('success', 'Peserta berhasil dihapus');
     }
 }

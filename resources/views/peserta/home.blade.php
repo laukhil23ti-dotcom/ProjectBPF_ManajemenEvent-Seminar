@@ -28,98 +28,49 @@
     </p>
 </section>
 
-<!-- SEMINAR LIST -->
+<!-- SEMINAR LIST (DINAMIS DARI DATABASE) -->
 <section class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8 pb-20">
 
-    <!-- SEMINAR ANIMASI -->
+@forelse($events as $event)
     <div class="bg-white rounded-2xl shadow hover:shadow-lg transition p-6 flex flex-col">
+
+        <!-- KATEGORI -->
         <div class="mb-4">
-            <span class="inline-block bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full">
-                Kreatif
+            <span class="inline-block bg-indigo-100 text-indigo-600 text-xs px-3 py-1 rounded-full">
+                {{ $event->kategori ?? 'Seminar' }}
             </span>
         </div>
 
+        <!-- JUDUL -->
         <h3 class="text-xl font-bold mb-2">
-            Seminar Animasi Digital
+            {{ $event->judul_event }}
         </h3>
 
+        <!-- DESKRIPSI -->
         <p class="text-slate-600 text-sm mb-4">
-            Pelajari dasar animasi 2D & 3D, workflow industri kreatif,
-            dan tips masuk dunia animasi profesional.
+            {{ $event->deskripsi ?? 'Tidak ada deskripsi' }}
         </p>
 
+        <!-- INFO -->
         <div class="text-sm text-slate-500 mb-6">
-            📅 22 Juni 2026 <br>
-            📍 Auditorium, Politeknik Caltex Riau
+            📅 {{ \Carbon\Carbon::parse($event->tanggal)->format('d F Y') }} <br>
+            📍 {{ $event->lokasi ?? '-' }}
         </div>
 
-        <a href="{{ url('/daftar?event=animasi') }}"
-           class="mt-auto text-center bg-pink-500 text-white
+        <!-- BUTTON -->
+        <a href="{{ route('peserta.create', ['event_id' => $event->id]) }}"
+           class="mt-auto text-center bg-indigo-500 text-white
                   py-3 rounded-xl font-semibold
-                  hover:bg-pink-600 transition">
+                  hover:bg-indigo-600 transition">
             Daftar Seminar
         </a>
     </div>
 
-    <!-- SEMINAR MACHINE LEARNING -->
-    <div class="bg-white rounded-2xl shadow hover:shadow-lg transition p-6 flex flex-col">
-        <div class="mb-4">
-            <span class="inline-block bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">
-                Teknologi
-            </span>
-        </div>
-
-        <h3 class="text-xl font-bold mb-2">
-            Seminar Machine Learning
-        </h3>
-
-        <p class="text-slate-600 text-sm mb-4">
-            Mengenal konsep Machine Learning, AI, dan penerapannya
-            dalam dunia industri dan data science.
-        </p>
-
-        <div class="text-sm text-slate-500 mb-6">
-            📅 24 Juni 2026 <br>
-            📍 Gedung Serba Guna, Politeknik Caltex Riau
-        </div>
-
-        <a href="{{ url('/daftar?event=ml') }}"
-           class="mt-auto text-center bg-blue-500 text-white
-                  py-3 rounded-xl font-semibold
-                  hover:bg-blue-600 transition">
-            Daftar Seminar
-        </a>
+@empty
+    <div class="col-span-3 text-center text-slate-500">
+        Belum ada seminar yang tersedia.
     </div>
-
-    <!-- SEMINAR BRANDING DIRI -->
-    <div class="bg-white rounded-2xl shadow hover:shadow-lg transition p-6 flex flex-col">
-        <div class="mb-4">
-            <span class="inline-block bg-emerald-100 text-emerald-600 text-xs px-3 py-1 rounded-full">
-                Karier
-            </span>
-        </div>
-
-        <h3 class="text-xl font-bold mb-2">
-            Seminar Personal Branding
-        </h3>
-
-        <p class="text-slate-600 text-sm mb-4">
-            Bangun citra diri yang kuat, percaya diri, dan
-            siap bersaing di dunia kerja & media sosial.
-        </p>
-
-        <div class="text-sm text-slate-500 mb-6">
-            📅 26 Juni 2026 <br>
-            📍 Amphi Depan, Politeknik Caltex Riau
-        </div>
-
-        <a href="{{ url('/daftar?event=branding') }}"
-           class="mt-auto text-center bg-emerald-500 text-white
-                  py-3 rounded-xl font-semibold
-                  hover:bg-emerald-600 transition">
-            Daftar Seminar
-        </a>
-    </div>
+@endforelse
 
 </section>
 

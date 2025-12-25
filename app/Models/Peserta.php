@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Peserta extends Model
 {
+    use HasFactory;
+
     protected $table = 'peserta';
 
     protected $fillable = [
@@ -13,6 +16,12 @@ class Peserta extends Model
         'email',
         'no_hp',
         'alamat',
-        'event_id'
+        'event_id',
     ];
+
+    // 🔥 RELASI KE EVENT
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
 }

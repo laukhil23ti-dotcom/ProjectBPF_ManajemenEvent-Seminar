@@ -9,34 +9,47 @@
 <body class="bg-slate-100">
 
 <div class="max-w-xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow">
-    <h2 class="text-2xl font-bold mb-2">Form Pendaftaran Seminar</h2>
-    <p class="text-slate-500 mb-6">
-        Seminar:
-        <span class="font-semibold capitalize">{{ $event }}</span>
-    </p>
+    <h2 class="text-2xl font-bold mb-6">Form Pendaftaran Seminar</h2>
 
-    <form method="POST" action="/daftar" class="space-y-4">
+    <form method="POST" action="{{ route('peserta.public.store') }}" class="space-y-4">
         @csrf
-        <input type="hidden" name="event" value="{{ $event }}">
 
+        <!-- EVENT -->
+        <div>
+            <label class="text-sm font-medium">Pilih Seminar</label>
+            <select name="event_id"
+                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
+                <option value="">-- Pilih Event --</option>
+                @foreach($events as $event)
+                    <option value="{{ $event->id }}">
+                        {{ $event->judul_event }} ({{ $event->tanggal }})
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- NAMA -->
         <div>
             <label class="text-sm">Nama Lengkap</label>
             <input type="text" name="nama"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
+        <!-- EMAIL -->
         <div>
             <label class="text-sm">Email</label>
             <input type="email" name="email"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
+        <!-- NO HP -->
         <div>
             <label class="text-sm">No HP</label>
             <input type="text" name="no_hp"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
+        <!-- ALAMAT -->
         <div>
             <label class="text-sm">Alamat</label>
             <textarea name="alamat"
