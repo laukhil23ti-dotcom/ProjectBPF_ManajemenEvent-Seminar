@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class PesertaController extends Controller
 {
     /**
-     * Tampilkan data peserta (ADMIN)
+     * Tampilkan data peserta
+     * ADMIN & STAFF
      */
     public function index(Request $request)
     {
@@ -26,19 +27,23 @@ class PesertaController extends Controller
     }
 
     /**
-     * Form tambah peserta (ADMIN)
+     * Form tambah peserta (ADMIN ONLY)
      */
     public function create()
     {
+        $this->onlyAdmin();
+
         $events = Event::all();
         return view('peserta.daftar', compact('events'));
     }
 
     /**
-     * Simpan peserta baru
+     * Simpan peserta (ADMIN ONLY)
      */
     public function store(Request $request)
     {
+        $this->onlyAdmin();
+
         $request->validate([
             'nama'     => 'required',
             'email'    => 'required|email',
@@ -47,13 +52,7 @@ class PesertaController extends Controller
             'event_id' => 'required|exists:events,id',
         ]);
 
-        Peserta::create([
-            'nama'     => $request->nama,
-            'email'    => $request->email,
-            'no_hp'    => $request->no_hp,
-            'alamat'   => $request->alamat,
-            'event_id' => $request->event_id,
-        ]);
+        Peserta::create($request->all());
 
         return redirect()
             ->route('peserta.index')
@@ -61,15 +60,63 @@ class PesertaController extends Controller
     }
 
     /**
-     * Hapus peserta
+     * Form edit peserta (ADMIN ONLY)
+     */
+    public function edit($id)
+    {
+        $this->onlyAdmin();
+
+        $peserta = Peserta::findOrFail($id);
+        $events = Event::all();
+
+        return view('admin.peserta.edit', compact('peserta', 'events'));
+    }
+
+    /**
+     * Update peserta (ADMIN ONLY)
+     */
+    public function update(Request $request, $id)
+    {
+        $this->onlyAdmin();
+
+        $request->validate([
+            'nama'     => 'required',
+            'email'    => 'required|email',
+            'no_hp'    => 'required',
+            'alamat'   => 'nullable',
+            'event_id' => 'required|exists:events,id',
+        ]);
+
+        $peserta = Peserta::findOrFail($id);
+        $peserta->update($request->all());
+
+        return redirect()
+            ->route('peserta.index')
+            ->with('success', 'Data peserta berhasil diperbarui');
+    }
+
+    /**
+     * Hapus peserta (ADMIN ONLY)
      */
     public function destroy($id)
     {
+        $this->onlyAdmin();
+
         $peserta = Peserta::findOrFail($id);
         $peserta->delete();
 
         return redirect()
             ->route('peserta.index')
             ->with('success', 'Peserta berhasil dihapus');
+    }
+
+    /**
+     * PROTEKSI ADMIN
+     */
+    private function onlyAdmin()
+    {
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            abort(403, 'Akses ditolak');
+        }
     }
 }

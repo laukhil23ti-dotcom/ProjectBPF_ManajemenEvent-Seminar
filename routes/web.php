@@ -24,7 +24,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::get('/', [PesertaPublicController::class, 'home'])->name('peserta.home');
 
-
 Route::get('/peserta/create', [PesertaPublicController::class, 'create'])
     ->name('peserta.create');
 
@@ -35,34 +34,46 @@ Route::get('/sukses', function () {
     return view('peserta.sukses');
 })->name('peserta.sukses');
 
-Route::resource('peserta', PesertaController::class);
-
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN & STAFF (WAJIB LOGIN)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
 
-    // DASHBOARD
+    /*
+    | DASHBOARD
+    */
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
     /*
-    |--------------------------------------------------------------------------
-    | EVENT & PESERTA (ADMIN)
-    |--------------------------------------------------------------------------
+    | EVENT (ADMIN)
+    | route name: event.index, event.create, event.edit, event.update, dll
     */
     Route::resource('event', EventController::class);
 
-    Route::resource('peserta', PesertaController::class)
-        ->except(['create', 'store']); // biar gak tabrakan dengan public
+    
+    // PESERTA (ADMIN & STAFF - index saja)
+    Route::get('/peserta', [PesertaController::class, 'index'])
+        ->name('peserta.index');
+
+    // PESERTA (ADMIN ONLY)
+    Route::post('/peserta', [PesertaController::class, 'store'])->name('peserta.store');
+
+    Route::get('/peserta/{id}/edit', [PesertaController::class, 'edit'])
+        ->name('peserta.edit');
+
+    Route::put('/peserta/{id}', [PesertaController::class, 'update'])
+        ->name('peserta.update');
+
+    Route::delete('/peserta/{id}', [PesertaController::class, 'destroy'])
+        ->name('peserta.destroy');
+
+
 
     /*
-    |--------------------------------------------------------------------------
     | STAFF (READ ONLY)
-    |--------------------------------------------------------------------------
     */
     Route::get('/staff/dashboard', function () {
         return view('staff.dashboard');
@@ -71,13 +82,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/staff/peserta', [PesertaController::class, 'index'])
         ->name('staff.peserta.index');
 
-});
+    /*
+    |--------------------------------------------------------------------------
+    | PROFILE
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
-//UNTUK PROFILE
-Route::middleware('auth')->group(function() {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 });
