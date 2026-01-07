@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Data Peserta')
-
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -10,7 +8,6 @@
         <small class="text-muted">Daftar seluruh peserta seminar</small>
     </div>
 
-    {{-- TOMBOL TAMBAH (ADMIN ONLY) --}}
     @if(auth()->user()->role === 'admin')
         <a href="{{ route('peserta.create') }}" class="btn btn-success">
             + Tambah Peserta
@@ -28,7 +25,6 @@
 <div class="card shadow-sm border-0">
     <div class="card-body">
 
-        {{-- SEARCH --}}
         <form method="GET" action="{{ route('peserta.index') }}" class="row mb-3">
             <div class="col-md-4">
                 <div class="input-group">
@@ -42,7 +38,6 @@
             </div>
         </form>
 
-        {{-- TABLE --}}
         <div class="table-responsive">
             <table class="table table-hover table-bordered align-middle">
                 <thead class="table-light">
@@ -54,7 +49,6 @@
                         <th>Alamat</th>
                         <th>Event</th>
 
-                        {{-- KOLOM ACTION HANYA ADMIN --}}
                         @if(auth()->user()->role === 'admin')
                             <th width="150">Action</th>
                         @endif
@@ -70,7 +64,6 @@
                         <td>{{ $item->alamat ?? '-' }}</td>
                         <td>{{ $item->event->judul_event ?? '-' }}</td>
 
-                        {{-- ACTION ADMIN --}}
                         @if(auth()->user()->role === 'admin')
                         <td class="text-center">
                             <a href="{{ route('peserta.edit', $item->id) }}"
@@ -102,7 +95,6 @@
             </table>
         </div>
 
-        {{-- PAGINATION --}}
         <div class="mt-3">
             {{ $peserta->links('pagination::bootstrap-5') }}
         </div>

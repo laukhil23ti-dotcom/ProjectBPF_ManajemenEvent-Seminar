@@ -1,7 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
 
-        {{-- DASHBOARD --}}
         <li class="nav-item">
             <a href="{{ route('dashboard') }}"
                class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -10,7 +9,6 @@
             </a>
         </li>
 
-        {{-- ADMIN MENU --}}
         @if(auth()->user()->role === 'admin')
 
             <li class="nav-item">
@@ -31,7 +29,6 @@
 
         @endif
 
-        {{-- STAFF MENU --}}
         @if(auth()->user()->role === 'staff')
 
             <li class="nav-item">
@@ -44,7 +41,6 @@
 
         @endif
 
-        {{-- LOGOUT --}}
         <li class="nav-item mt-4">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

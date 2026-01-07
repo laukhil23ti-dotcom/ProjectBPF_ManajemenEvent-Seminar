@@ -8,21 +8,18 @@ use Illuminate\Http\Request;
 
 class PesertaPublicController extends Controller
 {
-    //HOME (HALAMAN DEPAN PESERTA)
     public function home()
     {
         $events = Event::all();
         return view('peserta.home', compact('events'));
     }
 
-    //FORM DAFTAR PESERTA
     public function create()
     {
         $events = Event::all();
         return view('peserta.daftar', compact('events'));
     }
 
-    // ✅ SIMPAN DATA PESERTA
     public function store(Request $request)
     {
         $request->validate([

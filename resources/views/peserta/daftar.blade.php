@@ -14,7 +14,6 @@
     <form method="POST" action="{{ route('peserta.public.store') }}" class="space-y-4">
         @csrf
 
-        <!-- EVENT -->
         <div>
             <label class="text-sm font-medium">Pilih Seminar</label>
             <select name="event_id"
@@ -28,28 +27,24 @@
             </select>
         </div>
 
-        <!-- NAMA -->
         <div>
             <label class="text-sm">Nama Lengkap</label>
             <input type="text" name="nama"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
-        <!-- EMAIL -->
         <div>
             <label class="text-sm">Email</label>
             <input type="email" name="email"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
-        <!-- NO HP -->
         <div>
             <label class="text-sm">No HP</label>
             <input type="text" name="no_hp"
                    class="w-full border rounded-lg px-4 py-2 mt-1" required>
         </div>
 
-        <!-- ALAMAT -->
         <div>
             <label class="text-sm">Alamat</label>
             <textarea name="alamat"

@@ -8,88 +8,39 @@ use App\Http\Controllers\PesertaPublicController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 
-/*
-|--------------------------------------------------------------------------
-| AUTH
-|--------------------------------------------------------------------------
-*/
+//AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| PESERTA PUBLIC (TIDAK PERLU LOGIN)
-|--------------------------------------------------------------------------
-*/
+//PESERTA PUBLIC (TIDAK PERLU LOGIN)
 Route::get('/', [PesertaPublicController::class, 'home'])->name('peserta.home');
+Route::get('/peserta/create', [PesertaPublicController::class, 'create'])->name('peserta.create');
+Route::post('/daftar', [PesertaPublicController::class, 'store'])->name('peserta.public.store');
+Route::get('/sukses', function () {return view('peserta.sukses');})->name('peserta.sukses');
 
-Route::get('/peserta/create', [PesertaPublicController::class, 'create'])
-    ->name('peserta.create');
-
-Route::post('/daftar', [PesertaPublicController::class, 'store'])
-    ->name('peserta.public.store');
-
-Route::get('/sukses', function () {
-    return view('peserta.sukses');
-})->name('peserta.sukses');
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN & STAFF (WAJIB LOGIN)
-|--------------------------------------------------------------------------
-*/
+//ADMIN & STAFF (WAJIB LOGIN)
 Route::middleware('auth')->group(function () {
 
-    /*
-    | DASHBOARD
-    */
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+//DASHBOARD
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    /*
-    | EVENT (ADMIN)
-    | route name: event.index, event.create, event.edit, event.update, dll
-    */
-    Route::resource('event', EventController::class);
+//EVENT (ADMIN)
+Route::resource('event', EventController::class);
 
-    
-    // PESERTA (ADMIN & STAFF - index saja)
-    Route::get('/peserta', [PesertaController::class, 'index'])
-        ->name('peserta.index');
+// PESERTA (ADMIN & STAFF)
+Route::get('/peserta', [PesertaController::class, 'index'])->name('peserta.index');
 
-    // PESERTA (ADMIN ONLY)
-    Route::post('/peserta', [PesertaController::class, 'store'])->name('peserta.store');
+// PESERTA (ADMIN ONLY)  
+Route::post('/peserta', [PesertaController::class, 'store'])->name('peserta.store');
+Route::get('/peserta/{id}/edit', [PesertaController::class, 'edit'])->name('peserta.edit');
+Route::put('/peserta/{id}', [PesertaController::class, 'update'])->name('peserta.update');
+Route::delete('/peserta/{id}', [PesertaController::class, 'destroy'])->name('peserta.destroy');
 
-    Route::get('/peserta/{id}/edit', [PesertaController::class, 'edit'])
-        ->name('peserta.edit');
+//STAFF (READ ONLY)
+Route::get('/staff/dashboard', function () {return view('staff.dashboard');})->name('staff.dashboard');
+Route::get('/staff/peserta', [PesertaController::class, 'index'])->name('staff.peserta.index');
 
-    Route::put('/peserta/{id}', [PesertaController::class, 'update'])
-        ->name('peserta.update');
-
-    Route::delete('/peserta/{id}', [PesertaController::class, 'destroy'])
-        ->name('peserta.destroy');
-
-
-
-    /*
-    | STAFF (READ ONLY)
-    */
-    Route::get('/staff/dashboard', function () {
-        return view('staff.dashboard');
-    })->name('staff.dashboard');
-
-    Route::get('/staff/peserta', [PesertaController::class, 'index'])
-        ->name('staff.peserta.index');
-
-    /*
-    |--------------------------------------------------------------------------
-    | PROFILE
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::post('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-});
+//PROFILE
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');});

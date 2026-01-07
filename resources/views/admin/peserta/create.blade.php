@@ -5,7 +5,6 @@
     <title>Daftar Peserta Event</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSS ADMIN TEMPLATE -->
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/css/vertical-layout-light/style.css') }}">
@@ -36,7 +35,6 @@
 
                         <div class="row">
 
-                            <!-- NAMA -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nama Lengkap</label>
                                 <input type="text"
@@ -46,7 +44,6 @@
                                        required>
                             </div>
 
-                            <!-- EMAIL -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email</label>
                                 <input type="email"
@@ -56,7 +53,6 @@
                                        required>
                             </div>
 
-                            <!-- NO HP -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">No Handphone</label>
                                 <input type="text"
@@ -66,7 +62,6 @@
                                        required>
                             </div>
 
-                            <!-- EVENT -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Pilih Event</label>
                                 <select name="event_id" class="form-control" required>
@@ -79,7 +74,6 @@
                                 </select>
                             </div>
 
-                            <!-- ALAMAT -->
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Alamat</label>
                                 <textarea name="alamat"
@@ -90,7 +84,6 @@
 
                         </div>
 
-                        <!-- BUTTON -->
                         <div class="d-flex justify-content-end mt-4">
                             <a href="{{ route('peserta.home') }}" class="btn btn-light me-2">
                                 Kembali
@@ -110,7 +103,7 @@
     </div>
 </div>
 
-<!-- JS ADMIN TEMPLATE -->
+//JS ADMIN TEMPLATE
 <script src="{{ asset('assets-admin/vendors/js/vendor.bundle.base.js') }}"></script>
 <script src="{{ asset('assets-admin/js/off-canvas.js') }}"></script>
 <script src="{{ asset('assets-admin/js/hoverable-collapse.js') }}"></script>

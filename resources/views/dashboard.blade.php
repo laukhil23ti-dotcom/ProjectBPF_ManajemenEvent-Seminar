@@ -1,8 +1,7 @@
 @extends('layouts.app')
-
 @section('title', 'Dashboard')
-
 @section('content')
+
 <div class="card p-4">
     <h4>Selamat datang, {{ auth()->user()->name }}!</h4>
 

@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class PesertaController extends Controller
 {
-    /**
-     * Tampilkan data peserta
-     * ADMIN & STAFF
-     */
+
     public function index(Request $request)
     {
         $query = Peserta::with('event');
@@ -26,9 +23,6 @@ class PesertaController extends Controller
         return view('admin.peserta.index', compact('peserta'));
     }
 
-    /**
-     * Form tambah peserta (ADMIN ONLY)
-     */
     public function create()
     {
         $this->onlyAdmin();
@@ -37,9 +31,6 @@ class PesertaController extends Controller
         return view('peserta.daftar', compact('events'));
     }
 
-    /**
-     * Simpan peserta (ADMIN ONLY)
-     */
     public function store(Request $request)
     {
         $this->onlyAdmin();
@@ -59,9 +50,6 @@ class PesertaController extends Controller
             ->with('success', 'Peserta berhasil ditambahkan');
     }
 
-    /**
-     * Form edit peserta (ADMIN ONLY)
-     */
     public function edit($id)
     {
         $this->onlyAdmin();
@@ -72,9 +60,6 @@ class PesertaController extends Controller
         return view('admin.peserta.edit', compact('peserta', 'events'));
     }
 
-    /**
-     * Update peserta (ADMIN ONLY)
-     */
     public function update(Request $request, $id)
     {
         $this->onlyAdmin();
@@ -95,9 +80,6 @@ class PesertaController extends Controller
             ->with('success', 'Data peserta berhasil diperbarui');
     }
 
-    /**
-     * Hapus peserta (ADMIN ONLY)
-     */
     public function destroy($id)
     {
         $this->onlyAdmin();
@@ -110,9 +92,6 @@ class PesertaController extends Controller
             ->with('success', 'Peserta berhasil dihapus');
     }
 
-    /**
-     * PROTEKSI ADMIN
-     */
     private function onlyAdmin()
     {
         if (!auth()->check() || auth()->user()->role !== 'admin') {

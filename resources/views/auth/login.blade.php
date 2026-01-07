@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Login</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/css/vertical-layout-light/style.css') }}">
@@ -37,7 +36,6 @@
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
 
-                    <!-- EMAIL -->
                     <div class="form-group mb-3">
                         <label>Email</label>
                         <input type="email"
@@ -47,7 +45,6 @@
                                required>
                     </div>
 
-                    <!-- PASSWORD -->
                     <div class="form-group mb-4">
                         <label>Password</label>
                         <input type="password"
@@ -57,7 +54,6 @@
                                required>
                     </div>
 
-                    <!-- BUTTON -->
                     <button class="btn btn-primary w-100">
                         Login
                     </button>

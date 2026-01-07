@@ -19,7 +19,6 @@ class Peserta extends Model
         'event_id',
     ];
 
-    // 🔥 RELASI KE EVENT
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');

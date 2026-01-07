@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Data Peserta (Staff)</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/css/vertical-layout-light/style.css') }}">
@@ -14,7 +13,6 @@
 <body>
 <div class="container-scroller">
 
-<!-- NAVBAR -->
 <nav class="navbar fixed-top d-flex flex-row">
     <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
@@ -25,7 +23,6 @@
 
 <div class="container-fluid page-body-wrapper">
 
-<!-- SIDEBAR -->
 <nav class="sidebar sidebar-offcanvas">
     <ul class="nav">
         <li class="nav-item">
@@ -44,7 +41,6 @@
     </ul>
 </nav>
 
-<!-- CONTENT -->
 <div class="main-panel">
     <div class="content-wrapper">
 

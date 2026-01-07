@@ -19,9 +19,6 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        // ===============================
-        // VALIDATION
-        // ===============================
         $rules = [
             'name' => 'required|string|max:255',
             'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -38,9 +35,6 @@ class ProfileController extends Controller
 
         $request->validate($rules);
 
-        // ===============================
-        // UPDATE DATA DASAR
-        // ===============================
         $user->name = $request->name;
 
         if ($request->filled('email')) {
@@ -51,17 +45,14 @@ class ProfileController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-        // ===============================
-        // UPLOAD FOTO PROFIL (FIX UTAMA)
-        // ===============================
         if ($request->hasFile('profile_picture') && $request->file('profile_picture')->isValid()) {
 
-            // Pastikan folder uploads ada
+            //pastikan folder uploads ada
             if (!File::exists(public_path('uploads'))) {
                 File::makeDirectory(public_path('uploads'), 0755, true);
             }
 
-            // Hapus foto lama (kalau ada)
+            //hapus foto lama (kalau ada)
             if ($user->profile_picture && File::exists(public_path('uploads/'.$user->profile_picture))) {
                 File::delete(public_path('uploads/'.$user->profile_picture));
             }
@@ -73,9 +64,6 @@ class ProfileController extends Controller
             $user->profile_picture = $filename;
         }
 
-        // ===============================
-        // SAVE
-        // ===============================
         $user->save();
 
         return redirect()
