@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Dashboard')</title>
+    <title>@yield('title', 'Manajemen Seminar')</title>
 
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets-admin/vendors/css/vendor.bundle.base.css') }}">
@@ -31,9 +31,11 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color:#6a1b9a">
         <div class="navbar-brand-wrapper d-flex justify-content-between align-items-center w-100 px-3">
 
-            <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
-                <img src="{{ asset('assets-admin/images/logo.svg') }}" style="height:40px">
-            </a>
+            <a class="navbar-brand text-decoration-none" href="{{ route('dashboard') }}">
+            <div style="--brand-color:#ffffff">
+                @include('partials.brand')
+            </div>
+        </a>
 
             <ul class="navbar-nav navbar-nav-right">
                 <li class="nav-item nav-profile dropdown">

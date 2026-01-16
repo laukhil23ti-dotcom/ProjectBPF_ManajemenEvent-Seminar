@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 
 class PesertaController extends Controller
 {
-
+    // ======================
+    // ADMIN: LIST PESERTA
+    // ======================
     public function index(Request $request)
     {
+        $this->onlyAdmin();
+
         $query = Peserta::with('event');
 
         if ($request->search) {
@@ -23,18 +27,24 @@ class PesertaController extends Controller
         return view('admin.peserta.index', compact('peserta'));
     }
 
-    public function create()
+    // =====================================================
+    // PESERTA: FORM DAFTAR (AUTO EVENT, TANPA DROPDOWN)
+    // =====================================================
+    public function create($event_id)
     {
-        $this->onlyAdmin();
+        // ❌ TIDAK PAKAI onlyAdmin
+        // karena ini FORM PESERTA
 
-        $events = Event::all();
-        return view('peserta.daftar', compact('events'));
+        $event = Event::findOrFail($event_id);
+
+        return view('peserta.daftar', compact('event'));
     }
 
+    // ======================
+    // SIMPAN DATA PESERTA
+    // ======================
     public function store(Request $request)
     {
-        $this->onlyAdmin();
-
         $request->validate([
             'nama'     => 'required',
             'email'    => 'required|email',
@@ -43,13 +53,22 @@ class PesertaController extends Controller
             'event_id' => 'required|exists:events,id',
         ]);
 
-        Peserta::create($request->all());
+        Peserta::create([
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'no_hp'    => $request->no_hp,
+            'alamat'   => $request->alamat,
+            'event_id' => $request->event_id,
+        ]);
 
         return redirect()
-            ->route('peserta.index')
-            ->with('success', 'Peserta berhasil ditambahkan');
+            ->route('peserta.home')
+            ->with('success', 'Berhasil mendaftar seminar 🎉');
     }
 
+    // ======================
+    // ADMIN: EDIT PESERTA
+    // ======================
     public function edit($id)
     {
         $this->onlyAdmin();
@@ -60,6 +79,9 @@ class PesertaController extends Controller
         return view('admin.peserta.edit', compact('peserta', 'events'));
     }
 
+    // ======================
+    // ADMIN: UPDATE PESERTA
+    // ======================
     public function update(Request $request, $id)
     {
         $this->onlyAdmin();
@@ -73,25 +95,32 @@ class PesertaController extends Controller
         ]);
 
         $peserta = Peserta::findOrFail($id);
-        $peserta->update($request->all());
+        $peserta->update($request->only([
+            'nama', 'email', 'no_hp', 'alamat', 'event_id'
+        ]));
 
         return redirect()
             ->route('peserta.index')
             ->with('success', 'Data peserta berhasil diperbarui');
     }
 
+    // ======================
+    // ADMIN: HAPUS PESERTA
+    // ======================
     public function destroy($id)
     {
         $this->onlyAdmin();
 
-        $peserta = Peserta::findOrFail($id);
-        $peserta->delete();
+        Peserta::findOrFail($id)->delete();
 
         return redirect()
             ->route('peserta.index')
             ->with('success', 'Peserta berhasil dihapus');
     }
 
+    // ======================
+    // ADMIN GUARD
+    // ======================
     private function onlyAdmin()
     {
         if (!auth()->check() || auth()->user()->role !== 'admin') {

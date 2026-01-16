@@ -11,7 +11,10 @@
 <body class="bg-slate-100 text-slate-800">
 
 <nav class="bg-white shadow-sm px-10 py-5 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-indigo-600">SeminarHub</h1>
+    <div style="--brand-color:#4f46e5">
+         @include('partials.brand')
+    </div>
+
     <span class="text-sm text-slate-500">Event & Seminar Kampus</span>
 </nav>
 
